@@ -1,5 +1,5 @@
 {
-  "name": "c.c.",
+  "name": "flcc",
   "version": "1.0.0",
   "description": "一门函数式语言。 支持协程（CSP）、Monad、模式匹配、惰性求值。",
   "main": "index.js",

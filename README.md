@@ -8,5 +8,5 @@
 
 ## Install
 ```bash
-$ npm install C.C. -g
+$ npm install flcc -g
 ```
