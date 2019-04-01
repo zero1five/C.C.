@@ -4,7 +4,8 @@
   "description": "一门函数式语言。 支持协程（CSP）、Monad、模式匹配、惰性求值。",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node ./src/main"
   },
   "repository": {
     "type": "git",
