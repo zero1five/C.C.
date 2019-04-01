@@ -1,3 +1,3 @@
-/**
- * 语法解析器
- */
+const evaluate = () => {};
+
+module.exports = evaluate;

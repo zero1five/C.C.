@@ -1,5 +1,6 @@
-const parser = ('./parser');
-const evaluate = ('./eval');
+const parser = require('./parser');
+const evaluate = require('./eval');
+const { Scope } = require('./scope');
 
 const create_interpreter = () => {
   // create scope
