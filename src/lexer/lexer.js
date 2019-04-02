@@ -7,6 +7,7 @@ class Tokenizer {
     const tokens = [];
     let token;
     let lastPosition = 0;
+    let rows = 1;
 
     // Keep processing the string until it is empty
     while (input.length) {
@@ -23,7 +24,12 @@ class Tokenizer {
         throw Error(`Lexer: Regex parse error, please check your lexer config.`);
       }
 
-      token.position = [lastPosition, lastPosition + token.value.length - 1];
+      if (token.value.indexOf('\n')) {
+        rows++;
+      }
+
+      token.position = [lastPosition, lastPosition + token.value.length];
+      token.row = rows;
       lastPosition += token.value.length;
 
       // Advance the string
