@@ -32,6 +32,13 @@ const lexerRules = [
     /* 标识符 */
     type: 'Identifier',
     regexes: [/^([a-zA-Z]+)/]
+  },
+  {
+    /** 二元表达式 */
+    type: 'BinaryExpression',
+    regexes: [
+      
+    ]
   }
 ];
 

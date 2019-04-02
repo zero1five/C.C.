@@ -1,3 +1,4 @@
+/** 组合表达式 -> 递归解析器 */
 class Tokenizer {
   constructor(lexerConfig) {
     this.lexerConfig = lexerConfig;
