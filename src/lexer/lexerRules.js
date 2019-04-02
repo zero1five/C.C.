@@ -2,7 +2,7 @@ const lexerRules = [
   { 
     /* 空格 */
     type: 'whitespace',
-    regexes: [/^(\s+)/],
+    regexes: [/^(\s)/],
     ignore: true
   },
   {

@@ -24,8 +24,14 @@ class Tokenizer {
         throw Error(`Lexer: Regex parse error, please check your lexer config.`);
       }
 
-      if (token.value.indexOf('\n')) {
-        rows++;
+      // Get rows 
+      if (token.value.indexOf('\n') !== -1) {
+        const newLines = token.value.match(/\n/g).length;
+        if (newLines > 1) {
+          rows += newLines;
+        } else {
+          rows++;
+        }
       }
 
       token.position = [lastPosition, lastPosition + token.value.length];
