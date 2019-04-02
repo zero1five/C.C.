@@ -54,9 +54,8 @@ class Tokenizer {
 
   getTokenOnFirstMatch({ input, type, regex }) {
     const matches = input.match(regex);
-
     if (matches) {
-      return { type, value: matches[1] };
+      return { type, value: matches[0] };
     }
   }
 }

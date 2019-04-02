@@ -3,7 +3,17 @@ const lexerRules = [
     /* 空格 */
     type: 'whitespace',
     regexes: [/^(\s+)/],
-    ingore: true
+    ignore: true
+  },
+  {
+    /* 注释 */
+    type: 'comment',
+    regexes: [
+      /\/\/(.*)\n/,
+      /\/\*([^]*)\*\/\n/,
+      /\/\*\*([^]*)\*\//
+    ],
+    ignore: true
   },
   {
     /* 文字 */
@@ -15,7 +25,7 @@ const lexerRules = [
     type: 'operator',
     regexes: [
       /^(\(|\))/,
-      /^(\+|\-|\*|\/)/
+      /^(\+|\-|\*|[^\/]\/[^\/])/
     ]
   }
 ];
