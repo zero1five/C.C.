@@ -1,8 +1,5 @@
 /** 组合表达式 -> 递归解析器 */
 class Tokenizer {
-  static EOF = { type: 'EOF' };
-  static EOL = { type: 'EOL' };
-
   constructor(lexerConfig) {
     this.lexerConfig = lexerConfig;
   }
@@ -51,7 +48,7 @@ class Tokenizer {
     }
 
     // add end of file token
-    tokens.push(this.EOF);
+    tokens.push({ ...Tokenizer.EOF, position: [lastPosition, lastPosition], rows });
 
     return tokens;
   }
@@ -79,6 +76,9 @@ class Tokenizer {
     }
   }
 }
+
+Tokenizer.EOF = { type: 'EOF' };
+Tokenizer.EOL = { type: 'EOL' };
 
 const createLexer = rules => code => new Tokenizer(rules).tokenize(code);
 
