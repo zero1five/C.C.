@@ -1,7 +1,7 @@
 class Scanner {
   constructor(tokens, index = 0) {
-    this.tokens = [];
-    this.index = 0;
+    this.tokens = tokens;
+    this.index = index;
   };
 
   read() {
