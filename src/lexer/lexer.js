@@ -48,7 +48,7 @@ class Tokenizer {
     }
 
     // add end of file token
-    tokens.push({ ...Tokenizer.EOF, position: [lastPosition, lastPosition], rows });
+    // tokens.push({ ...Tokenizer.EOF, position: [lastPosition, lastPosition], rows });
 
     return tokens;
   }

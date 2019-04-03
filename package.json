@@ -17,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/zero1five/C.C./issues"
   },
-  "homepage": "https://github.com/zero1five/C.C.#readme"
+  "homepage": "https://github.com/zero1five/C.C.#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "syntax-parser": "^1.0.14"
+  }
 }
