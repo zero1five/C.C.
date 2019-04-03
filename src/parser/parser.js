@@ -12,7 +12,7 @@ const parser = (code) => {
   const Lexer = createLexer(lexerRules, { /* options */ });
   const Parser = createParser(rootProgram);
 
-  Parser(Lexer(code));
+  return Parser(Lexer(code));
 };
 
 module.exports = parser;
