@@ -5,9 +5,14 @@
 const { createLexer } = require('../lexer/lexer');
 const lexerRules = require('../lexer/lexerRules');
 
+const { createParser } = require('./parserBase');
+const rootProgram = require('./expression');
+
 const parser = (code) => {
   const Lexer = createLexer(lexerRules, { /* options */ });
-  console.log(Lexer(code));
+  const Parser = createParser(rootProgram);
+
+  Parser(Lexer(code));
 };
 
 module.exports = parser;

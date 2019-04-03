@@ -1,4 +1,4 @@
-const parser = require('./parser');
+const parser = require('../parser/parser');
 const evaluate = require('./eval');
 const { Scope } = require('./scope');
 
