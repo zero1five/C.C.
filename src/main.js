@@ -16,6 +16,11 @@
  * 语法解析器
  */
 
+/**
+ *  1. ast 以 program 开始
+ *  2. ast 支持 print
+ */
+
 const { argv } = require('process');
 const { readFileSync } = require('fs');
 const { create_interpreter } = require('./compiler');

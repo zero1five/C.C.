@@ -6,11 +6,13 @@ const parseTermAst = (ast) =>
         (obj, next) =>
           next[0]
             ? {
+                type: 'BinaryExpression',
                 operator: next[0],
                 left: obj || ast[0],
                 right: next[1]
               }
             : {
+                type: 'BinaryExpression',
                 operator: next[1] && next[1].operator,
                 left: obj || ast[0],
                 right: next[1] && next[1].right
@@ -19,16 +21,20 @@ const parseTermAst = (ast) =>
       )
     : ast[0];
 
-const rootProgram = () => chain(term, many(addOp, rootProgram))(parseTermAst);
+const rootProgram = () => chain(binary)(ast => ({
+  type: 'Program',
+  body: ast[0]
+}));
 
-const term = () => chain(factor, many(mulOp, rootProgram))(parseTermAst);
+const binary = () => chain(term, many(addOp, binary))(parseTermAst);
+const term = () => chain(factor, many(mulOp, binary))(parseTermAst);
 
 const mulOp = () => chain(['*', '/'])(ast => ast[0].value);
 
 const addOp = () => chain(['+', '-'])(ast => ast[0].value);
 
 const factor = () => chain([
-    chain('(', rootProgram, ')')(ast => ast[1]),
+    chain('(', binary, ')')(ast => ast[1]),
     chain(matchTokenType('Literal'))(ast => ast[0].value)
 ])(ast => ast[0]);
 
