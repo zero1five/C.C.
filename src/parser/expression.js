@@ -45,12 +45,12 @@ const rootProgram = () => chain(plus([expression, variable]))(ast => ({
   body: ast[0]
 }));
 
-const expression = () => chain([binary, call])(ast => ({
+const expression = () => chain([binary, callExpression])(ast => ({
   type: 'ExpressionStatement',
   expression: ast[0]
 }));
 
-const call = () => chain([
+const callExpression = () => chain([
   chain(Identifier, "(", ")"),
   chain(Identifier, "(", ")", ";"),
 ])(parseCallAst);
