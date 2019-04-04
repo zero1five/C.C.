@@ -28,11 +28,21 @@ const parseVariableAst = (ast) =>
     init: obj[2] ? obj[3] : null
   }));
 
-const parseCallAst = (ast) => ({
-  type: 'CallExpression',
-  call: ast[0][0],
-  arguments: []
-});
+const parseCallAst = (ast) => {
+  const [callBody] = ast;
+  const [callee, left, right] = callBody;
+  let args = [];
+
+  if (right.value !== ')') {
+    args = callBody.slice(2, callBody.indexOf(x => x.value === ')'));
+  }
+
+  return {
+    type: 'CallExpression',
+    call: callee,
+    arguments: args
+  }
+};
 
 /** 
  * const let ✅
@@ -51,8 +61,8 @@ const expression = () => chain([binary, callExpression])(ast => ({
 }));
 
 const callExpression = () => chain([
-  chain(Identifier, "(", ")"),
-  chain(Identifier, "(", ")", ";"),
+  chain(Identifier, "(", ")", optional(";")),
+  chain(Identifier, "(", many(Identifier), ")", optional(";"))
 ])(parseCallAst);
 
 const variable = () => chain([

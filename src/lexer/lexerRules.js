@@ -16,6 +16,14 @@ const lexerRules = [
     ignore: true
   },
   {
+    /* Separator */
+    type: 'separator',
+    regexes: [
+      /^,/
+    ],
+    ignore: true
+  },
+  {
     /* 文字 */
     type: 'Literal',
     regexes: [/^([0-9]+)/]

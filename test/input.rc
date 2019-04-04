@@ -10,4 +10,4 @@ let a
 
 const b = 3
 
-fn()
+fn(1, 2, 3)
