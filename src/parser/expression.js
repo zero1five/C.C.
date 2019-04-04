@@ -87,17 +87,19 @@ const addOp = () => chain(['+', '-'])(ast => ast[0].value);
 
 const factor = () => chain([
     chain('(', binary, ')')(ast => ast[1]),
-    chain(Literal)(ast => ast[0].value),
+    chain(Literal)(ast => ast[0]),
 ])(ast => ast[0]);
 
 /** atomic  */
 
 const Literal = () => chain(matchTokenType('Literal'))(ast => ({
+  ...ast[0],
   type: 'Literal',
   value: ast[0].value
 }))
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
+  ...ast[0],
   type: 'Identifier',
   name: ast[0].value
 }));
