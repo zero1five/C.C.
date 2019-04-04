@@ -21,21 +21,29 @@ const parseTermAst = (ast) =>
       )
     : ast[0];
 
-const rootProgram = () => chain(binary)(ast => ({
+const rootProgram = () => chain([binary, expression])(ast => ({
   type: 'Program',
-  body: ast[0]
+  body: [ast[0]]
 }));
 
+const expression = () => chain([Identifier, binary], many(expression))(ast => ast[0]);
+
 const binary = () => chain(term, many(addOp, binary))(parseTermAst);
+
 const term = () => chain(factor, many(mulOp, binary))(parseTermAst);
 
-const mulOp = () => chain(['*', '/'])(ast => ast[0].value);
+const mulOp = () => chain(['*', '/', '%'])(ast => ast[0].value);
 
 const addOp = () => chain(['+', '-'])(ast => ast[0].value);
 
 const factor = () => chain([
     chain('(', binary, ')')(ast => ast[1]),
-    chain(matchTokenType('Literal'))(ast => ast[0].value)
+    chain(matchTokenType('Literal'))(ast => ast[0].value),
 ])(ast => ast[0]);
+
+const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
+  type: 'Identifier',
+  name: ast[0].value
+}));
 
 module.exports = rootProgram

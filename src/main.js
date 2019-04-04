@@ -19,6 +19,7 @@
 /**
  *  1. ast 以 program 开始
  *  2. ast 支持 print
+ *  3. ast 支持 \x -> x
  */
 
 const { argv } = require('process');
