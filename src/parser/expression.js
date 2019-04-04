@@ -26,7 +26,13 @@ const parseVariableAst = (ast) =>
     type: 'VariableDeclarator',
     id: obj[1],
     init: obj[2] ? obj[3] : null
-  }))
+  }));
+
+const parseCallAst = (ast) => ({
+  type: 'CallExpression',
+  call: ast[0][0],
+  arguments: []
+});
 
 /** 
  * const let ✅
@@ -39,10 +45,15 @@ const rootProgram = () => chain(plus([expression, variable]))(ast => ({
   body: ast[0]
 }));
 
-const expression = () => chain([binary])(ast => ({
+const expression = () => chain([binary, call])(ast => ({
   type: 'ExpressionStatement',
   expression: ast[0]
 }));
+
+const call = () => chain([
+  chain(Identifier, "(", ")"),
+  chain(Identifier, "(", ")", ";"),
+])(parseCallAst);
 
 const variable = () => chain([
   chain(matchTokenType('Declarator'), Identifier),

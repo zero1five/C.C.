@@ -5,3 +5,5 @@
 let a
 
 const b = 3
+
+fn()

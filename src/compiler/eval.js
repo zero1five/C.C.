@@ -1,5 +1,5 @@
 const evaluate = (ast) => {
-  console.log(ast.body[2])
+  console.log(ast.body)
 };
 
 module.exports = evaluate;
