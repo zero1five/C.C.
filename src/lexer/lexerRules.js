@@ -31,7 +31,14 @@ const lexerRules = [
   {
     /* 标识符 */
     type: 'Identifier',
-    regexes: [/^([a-zA-Z]+)/]
+    regexes: [
+      /^((?!(let|const))[a-zA-Z]+(?!(let|const)))/,
+    ]
+  },
+  {
+    /* 声明变量 */
+    type: 'Declarator',
+    regexes: [/^(let|const)/]
   }
 ];
 

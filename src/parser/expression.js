@@ -21,12 +21,28 @@ const parseTermAst = (ast) =>
       )
     : ast[0];
 
-const rootProgram = () => chain([binary, expression])(ast => ({
+/** 
+ * const let 
+ * 1 + 3
+ * call
+ */
+
+const rootProgram = () => chain([expression, variable])(ast => ({
   type: 'Program',
-  body: [ast[0]]
+  body: ast
 }));
 
-const expression = () => chain([Identifier, binary], many(expression))(ast => ast[0]);
+const expression = () => chain([binary], many(rootProgram))(ast => ({
+  type: 'ExpressionStatement',
+  expression: ast[0]
+}));
+
+const variable = () => chain(matchTokenType('Declarator'), Identifier/* '=', matchTokenType('Literal') */, many(rootProgram))(ast => ({
+  type: 'VariableDeclaration',
+  decalarations: ast 
+}));
+
+/** arithmetic */
 
 const binary = () => chain(term, many(addOp, binary))(parseTermAst);
 

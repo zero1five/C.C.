@@ -1,27 +1,5 @@
 #!/usr/bin/env node
 
-/**
- * 语法设计：
- * 1 + 3
- * print('') | print("%s %s %s", a, b, c)
- * \x -> x
- * 模式匹配
- */
-
-/**
- * 词法解析器
- */
-
-/**
- * 语法解析器
- */
-
-/**
- *  1. ast 以 program 开始
- *  2. ast 支持 print
- *  3. ast 支持 \x -> x
- */
-
 const { argv } = require('process');
 const { readFileSync } = require('fs');
 const { create_interpreter } = require('./compiler');
