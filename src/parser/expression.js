@@ -34,7 +34,7 @@ const parseCallAst = (ast) => {
   let args = [];
 
   if (right.value !== ')') {
-    args = callBody.slice(2, callBody.indexOf(x => x.value === ')'));
+    args = callBody.slice(2, callBody.indexOf(x => x.value === ')') - 1);
   }
 
   return {
@@ -47,7 +47,8 @@ const parseCallAst = (ast) => {
 /** 
  * const let ✅
  * 1 + 3 ✅
- * call 
+ * call ✅
+ * 
  */
 
 const rootProgram = () => chain(plus([expression, variable]))(ast => ({
@@ -62,12 +63,12 @@ const expression = () => chain([binary, callExpression])(ast => ({
 
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
-  chain(Identifier, "(", many(Identifier), ")", optional(";"))
+  chain(Identifier, "(", many([Literal, Identifier]), ")", optional(";"))
 ])(parseCallAst);
 
 const variable = () => chain([
   chain(matchTokenType('Declarator'), Identifier),
-  chain(matchTokenType('Declarator'), Identifier, '=', matchTokenType('Literal')),
+  chain(matchTokenType('Declarator'), Identifier, '=', Literal),
 ])(ast => ({
   type: 'VariableDeclaration',
   kind: ast[0][0].value,
@@ -86,10 +87,15 @@ const addOp = () => chain(['+', '-'])(ast => ast[0].value);
 
 const factor = () => chain([
     chain('(', binary, ')')(ast => ast[1]),
-    chain(matchTokenType('Literal'))(ast => ast[0].value),
+    chain(Literal)(ast => ast[0].value),
 ])(ast => ast[0]);
 
 /** atomic  */
+
+const Literal = () => chain(matchTokenType('Literal'))(ast => ({
+  type: 'Literal',
+  value: ast[0].value
+}))
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
   type: 'Identifier',
