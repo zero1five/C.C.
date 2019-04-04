@@ -43,9 +43,11 @@ const parseCallAst = (ast) => {
 };
 
 const parseBlockAst = (ast) => {
+  const [start, body, end] = ast;
+
   return {
     type: 'BlockStatement',
-    body: []
+    body: body ? body.body : []
   }
 };
 
