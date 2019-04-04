@@ -68,7 +68,7 @@ const parseArrowFunctionAst = (ast) => {
  * const let ✅
  * 1 + 3 ✅
  * call ✅
- * arrowFunction () => {}
+ * arrowFunction () => {} ✅
  */
 
 const rootProgram = () => chain(plus([expression, variable, BlockStatement]))(ast => ({
@@ -97,7 +97,7 @@ const callExpression = () => chain([
 
 const variable = () => chain([
   chain(matchTokenType('Declarator'), Identifier),
-  chain(matchTokenType('Declarator'), Identifier, '=', Literal),
+  chain(matchTokenType('Declarator'), Identifier, '=', optional([Literal, arrowFunctionExpression])),
 ])(ast => ({
   type: 'VariableDeclaration',
   kind: ast[0][0].value,
