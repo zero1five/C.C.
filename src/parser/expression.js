@@ -52,11 +52,15 @@ const parseBlockAst = (ast) => {
 };
 
 const parseArrowFunctionAst = (ast) => {
-  const [[left, right, arrow, body]] = ast;
-
+  let [[left, right, arrow, body]] = ast,
+      params = [];
+  if(right instanceof Array) {
+    [[left, params, right, arrow, body]] = ast;
+  }
   return {
     type: 'ArrowFunctionExpression',
-    body
+    body,
+    params: params.length ? params : []
   }
 };
 
@@ -82,7 +86,8 @@ const BlockStatement = () => chain(
 )(parseBlockAst);
 
 const arrowFunctionExpression = () => chain([
-  chain("(", ")", matchTokenType('arrowFunction'), BlockStatement)
+  chain("(", ")", matchTokenType('arrowFunction'), BlockStatement),
+  chain("(", plus([Identifier]), ")", matchTokenType('arrowFunction'), BlockStatement),
 ])(parseArrowFunctionAst);
 
 const callExpression = () => chain([
@@ -120,7 +125,7 @@ const Literal = () => chain(matchTokenType('Literal'))(ast => ({
   ...ast[0],
   type: 'Literal',
   value: ast[0].value
-}))
+}));
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
   ...ast[0],
