@@ -21,15 +21,22 @@ const parseTermAst = (ast) =>
       )
     : ast[0];
 
+const parseVariableAst = (ast) => 
+  ast.map(obj => ({
+    type: 'VariableDeclarator',
+    id: obj[1],
+    init: obj[2] ? obj[3] : null
+  }))
+
 /** 
- * const let 
- * 1 + 3
- * call
+ * const let ✅
+ * 1 + 3 ✅
+ * call 
  */
 
 const rootProgram = () => chain(plus([expression, variable]))(ast => ({
   type: 'Program',
-  body: ast
+  body: ast[0]
 }));
 
 const expression = () => chain([binary])(ast => ({
@@ -42,7 +49,8 @@ const variable = () => chain([
   chain(matchTokenType('Declarator'), Identifier, '=', matchTokenType('Literal')),
 ])(ast => ({
   type: 'VariableDeclaration',
-  decalarations: ast
+  kind: ast[0][0].value,
+  declarations: parseVariableAst(ast)
 }));
 
 /** arithmetic */
