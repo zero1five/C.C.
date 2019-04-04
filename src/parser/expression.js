@@ -32,15 +32,29 @@ const parseCallAst = (ast) => {
   const [callBody] = ast;
   const [callee, left, right] = callBody;
   let args = [];
-
   if (right.value !== ')') {
     args = callBody.slice(2, callBody.indexOf(x => x.value === ')') - 1);
   }
-
   return {
     type: 'CallExpression',
     call: callee,
     arguments: args
+  }
+};
+
+const parseBlockAst = (ast) => {
+  return {
+    type: 'BlockStatement',
+    body: []
+  }
+};
+
+const parseArrowFunctionAst = (ast) => {
+  const [[left, right, arrow, body]] = ast;
+
+  return {
+    type: 'ArrowFunctionExpression',
+    body
   }
 };
 
@@ -61,16 +75,18 @@ const expression = () => chain([binary, callExpression, arrowFunctionExpression]
   expression: ast[0]
 }));
 
-const BlockStatement = () => chain(matchTokenType('blockStart'), rootProgram, matchTokenType('blockEnd'))();
+const BlockStatement = () => chain(
+  matchTokenType('blockStart'), optional(rootProgram), matchTokenType('blockEnd')
+)(parseBlockAst);
+
+const arrowFunctionExpression = () => chain([
+  chain("(", ")", matchTokenType('arrowFunction'), BlockStatement)
+])(parseArrowFunctionAst);
 
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
   chain(Identifier, "(", many([Literal, Identifier]), ")", optional(";"))
 ])(parseCallAst);
-
-const arrowFunctionExpression = () => chain([
-
-])();
 
 const variable = () => chain([
   chain(matchTokenType('Declarator'), Identifier),

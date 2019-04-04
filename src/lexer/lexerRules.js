@@ -59,7 +59,9 @@ const lexerRules = [
   {
     /* 声明函数 */
     type: 'arrowFunction',
-    regexes: []
+    regexes: [
+      /^=>/
+    ]
   }
 ];
 
