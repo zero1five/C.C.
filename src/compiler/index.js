@@ -8,7 +8,10 @@ const create_interpreter = () => {
   // install lib function
 
   return code => {
-    const ast = parser(code);
+    const { ast, error } = parser(code);
+    if (error) {
+      console.log(error);
+    }
     evaluate(ast, scope);
   }
 };

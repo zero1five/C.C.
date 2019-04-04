@@ -25,7 +25,7 @@ const lexerRules = [
     type: 'operator',
     regexes: [
       /^(\(|\))/,
-      /^(\+|\-|\*|\/)/
+      /^(\+|\-|\*|\/|=)/
     ]
   },
   {

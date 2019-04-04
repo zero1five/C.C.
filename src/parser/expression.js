@@ -27,19 +27,22 @@ const parseTermAst = (ast) =>
  * call
  */
 
-const rootProgram = () => chain([expression, variable])(ast => ({
+const rootProgram = () => chain(plus([expression, variable]))(ast => ({
   type: 'Program',
   body: ast
 }));
 
-const expression = () => chain([binary], many(rootProgram))(ast => ({
+const expression = () => chain([binary])(ast => ({
   type: 'ExpressionStatement',
   expression: ast[0]
 }));
 
-const variable = () => chain(matchTokenType('Declarator'), Identifier/* '=', matchTokenType('Literal') */, many(rootProgram))(ast => ({
+const variable = () => chain([
+  chain(matchTokenType('Declarator'), Identifier),
+  chain(matchTokenType('Declarator'), Identifier, '=', matchTokenType('Literal')),
+])(ast => ({
   type: 'VariableDeclaration',
-  decalarations: ast 
+  decalarations: ast
 }));
 
 /** arithmetic */
@@ -56,6 +59,8 @@ const factor = () => chain([
     chain('(', binary, ')')(ast => ast[1]),
     chain(matchTokenType('Literal'))(ast => ast[0].value),
 ])(ast => ast[0]);
+
+/** atomic  */
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
   type: 'Identifier',
