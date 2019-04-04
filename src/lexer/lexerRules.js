@@ -33,7 +33,7 @@ const lexerRules = [
     type: 'operator',
     regexes: [
       /^(\(|\))/,
-      /^(\+|\-|\*|\/|=)/
+      /^(\+|\-|\*|\/|=(?!>))/
     ]
   },
   {
@@ -47,6 +47,19 @@ const lexerRules = [
     /* 声明变量 */
     type: 'Declarator',
     regexes: [/^(let|const)/]
+  },
+  {
+    type: 'blockStart',
+    regexes: [/^{/]
+  },
+  {
+    type: 'blockEnd',
+    regexes: [/^}/]
+  },
+  {
+    /* 声明函数 */
+    type: 'arrowFunction',
+    regexes: []
   }
 ];
 
