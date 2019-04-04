@@ -19,7 +19,7 @@ const lexerRules = [
     /* Separator */
     type: 'separator',
     regexes: [
-      /^,/
+      /^(,|;)/
     ],
     ignore: true
   },
