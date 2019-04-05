@@ -53,13 +53,24 @@ const parseBlockAst = (ast) => {
 const parseArrowFunctionAst = (ast) => {
   let [[left, right, arrow, body]] = ast,
       params = [];
-  if(right instanceof Array) {
-    [[left, params, right, arrow, body]] = ast;
-  }
-  return {
-    type: 'ArrowFunctionExpression',
-    body,
-    params: params.length ? params : []
+
+  // e.g. a => {}
+  if (left.value !== '(') {
+    [[params, arrow, body]] = ast;
+    return {
+      type: 'ArrowFunctionExpression',
+      body,
+      params: params.length ? params : []
+    }
+  } else {
+    if(right instanceof Array) {
+      [[left, params, right, arrow, body]] = ast;
+    }
+    return {
+      type: 'ArrowFunctionExpression',
+      body,
+      params: params.length ? params : []
+    }
   }
 };
 
@@ -82,6 +93,7 @@ const BlockStatement = () => chain(
 )(parseBlockAst);
 
 const arrowFunctionExpression = () => chain([
+  chain(Identifier, matchTokenType('arrowFunction'), BlockStatement),
   chain("(", ")", matchTokenType('arrowFunction'), BlockStatement),
   chain("(", plus([Identifier]), ")", matchTokenType('arrowFunction'), BlockStatement),
 ])(parseArrowFunctionAst);
