@@ -96,7 +96,7 @@ const arrowFunctionExpression = () => chain([
   chain(Identifier, matchTokenType('arrowFunction'), BlockStatement),
   chain(Identifier, matchTokenType('arrowFunction'), expression),
   chain("(", ")", matchTokenType('arrowFunction'), BlockStatement),
-  chain("(", plus([Identifier]), ")", matchTokenType('arrowFunction'), BlockStatement),
+  chain("(", plus([Identifier]), ")", matchTokenType('arrowFunction'), optional([expression, BlockStatement])),
 ])(parseArrowFunctionAst);
 
 const callExpression = () => chain([

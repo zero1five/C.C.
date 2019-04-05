@@ -34,6 +34,10 @@
 // fn(10)
 
 const fn = a => fn2(10 + a);
-const fn2 = b => print(b);
+const fn2 = b => {
+  const fn3 = (c) => print(c);
+  print(b);
+  fn3(b)
+}
 
-fn(10)
+fn(10);
