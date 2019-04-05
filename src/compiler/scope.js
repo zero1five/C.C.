@@ -5,7 +5,7 @@ class ScopeVar {
   }
 
   $set(value){
-    if (this.value === 'const') {
+    if (this.kind === 'const') {
       return false
     } else {
       this.value = value

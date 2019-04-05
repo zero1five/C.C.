@@ -42,8 +42,15 @@
 
 // fn(10);
 
-const b = 10;
+// let b = 10;
 
-b = 12;
+const fn = () => {
+  let b = 20;
+  b = 10;
 
-print(b);
+  print(b);
+}
+
+fn();
+
+// print(b);

@@ -13,7 +13,7 @@ const eval_expression = (expr, localEnv) => {
       if (expr.name === 'undefined') return undefined
       const $var_indent = localEnv.$find(expr.name);
       if ($var_indent) { return $var_indent.$get() }
-      else { throw `[Error]${expr.loc}, '${expr.name}' undefined` };
+      else { throw `Uncaught ReferenceError: ${expr.name} is not defined` };
     case 'Literal':
       return expr.value;
     case 'MemberExpression':
@@ -38,7 +38,7 @@ const eval_expression = (expr, localEnv) => {
       const { left, right } = expr;
       let $var = localEnv.$find(left.name);
       if (!$var) throw `Uncaught ReferenceError: ${left.name} is not defined`;
-
+      if ($var.kind === 'const') throw `Uncaught TypeError: Assignment to constant variable.`
       return ({
           "=": (v) => ($var.$set(v), v),
           "+=": (v) => ($var.$set($var.$get() + v), $var.$get()),
