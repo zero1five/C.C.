@@ -13,7 +13,7 @@ const eval_expression = (expr, localEnv) => {
       if (expr.name === 'undefined') return undefined
       const $var = localEnv.$find(expr.name);
       if ($var) { return $var.$get() }
-      else { throw `[Error]${expr.loc}, '${expr.name}' 未定义` };
+      else { throw `[Error]${expr.loc}, '${expr.name}' undefined` };
     case 'Literal':
       return expr.value;
     case 'MemberExpression':
@@ -96,7 +96,7 @@ const eval_expression = (expr, localEnv) => {
         "instanceof": (a, b) => a instanceof b
       })[expr.operator](evaluate(expr.left, localEnv), evaluate(expr.right, localEnv));
     default:
-      console.log(expr)
+      // console.log(expr)
       break;
   }
 };

@@ -30,10 +30,9 @@ const parseVariableAst = (ast) =>
 
 const parseCallAst = (ast) => {
   const [callBody] = ast;
-  const [callee, left, right] = callBody;
-  let args = [];
-  if (right.value !== ')') {
-    args = callBody.slice(2, callBody.indexOf(x => x.value === ')') - 1);
+  let [callee, left, args, right] = callBody;
+  if (args.value === ')') {
+    args = []
   }
   return {
     type: 'CallExpression',
