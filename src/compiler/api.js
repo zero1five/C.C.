@@ -12,8 +12,8 @@ const api = {
     }
     console.log(templete);
   },
-  print: () => {
-
+  print: (...params) => {
+    console.log.apply(null, params)
   }
 }
 
