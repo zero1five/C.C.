@@ -10,7 +10,7 @@ const api = {
     while(params.length) {
       templete = templete.replace(/%s/, params.shift());
     }
-    console.log(templete);
+    console.log.call(null, templete);
   },
   print: (...params) => {
     console.log.apply(null, params)

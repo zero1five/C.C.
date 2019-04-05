@@ -112,7 +112,7 @@ const addOp = () => chain(['+', '-'])(ast => ast[0].value);
 
 const factor = () => chain([
     chain('(', binary, ')')(ast => ast[1]),
-    chain(Literal)(ast => ast[0]),
+    chain([Literal, Identifier])(ast => ast[0]),
 ])(ast => ast[0]);
 
 /** atomic  */
