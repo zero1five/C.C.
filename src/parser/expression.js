@@ -88,7 +88,7 @@ const arrowFunctionExpression = () => chain([
 
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
-  chain(Identifier, "(", many([Literal, Identifier, matchTokenType('separator')]), ")", optional(";"))
+  chain(Identifier, "(", many([Literal, Identifier, binary, matchTokenType('separator')]), ")", optional(";"))
 ])(parseCallAst);
 
 const variable = () => chain([
@@ -120,7 +120,9 @@ const factor = () => chain([
 const Literal = () => chain(matchTokenType('Literal'))(ast => ({
   ...ast[0],
   type: 'Literal',
-  value: ast[0].value
+  value: /^([0-9]+)$/.test(ast[0].value) 
+    ? Number(ast[0].value) 
+    : ast[0].value
 }));
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({

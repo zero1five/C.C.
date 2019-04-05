@@ -60,7 +60,6 @@ const eval_expression = (expr, localEnv) => {
         const this_val = localEnv.$find('this')
         return func.apply(this_val ? this_val.$get() : null, args)
       }
-      break;
     case 'VariableDeclaration':
       const { kind } = expr;
       for (const declartor of expr.declarations) {
@@ -96,7 +95,7 @@ const eval_expression = (expr, localEnv) => {
         "instanceof": (a, b) => a instanceof b
       })[expr.operator](evaluate(expr.left, localEnv), evaluate(expr.right, localEnv));
     default:
-      // console.log(expr)
+      console.log(expr)
       break;
   }
 };

@@ -1,5 +1,5 @@
 const api = {
-  print: (templete, ...params) => {
+  printStr: (templete, ...params) => {
     const regex = /%s/g;
     if (!templete) {
       throw `[Error]print: need template are you sure one params exits`
@@ -11,7 +11,10 @@ const api = {
       templete = templete.replace(/%s/, params.shift());
     }
     console.log(templete);
-  }  
+  },
+  print: () => {
+
+  }
 }
 
 module.exports = api

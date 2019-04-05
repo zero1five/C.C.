@@ -15,8 +15,9 @@ const create_interpreter = () => {
     const { ast, error } = parser(code);
     if (error) {
       console.log(error);
+    } else {
+      evaluate(ast, scope);
     }
-    evaluate(ast, scope);
   }
 };
 
