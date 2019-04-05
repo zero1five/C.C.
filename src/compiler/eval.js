@@ -11,8 +11,8 @@ const eval_expression = (expr, localEnv) => {
       break;
     case 'Identifier':
       if (expr.name === 'undefined') return undefined
-      const $var = localEnv.$find(expr.name);
-      if ($var) { return $var.$get() }
+      const $var_indent = localEnv.$find(expr.name);
+      if ($var_indent) { return $var_indent.$get() }
       else { throw `[Error]${expr.loc}, '${expr.name}' undefined` };
     case 'Literal':
       return expr.value;
@@ -34,6 +34,26 @@ const eval_expression = (expr, localEnv) => {
           }
       }
       break;
+    case 'AssignmentExpression':
+      const { left, right } = expr;
+      let $var = localEnv.$find(left.name);
+      if (!$var) throw `Uncaught ReferenceError: ${left.name} is not defined`;
+
+      return ({
+          "=": (v) => ($var.$set(v), v),
+          "+=": (v) => ($var.$set($var.$get() + v), $var.$get()),
+          "-=": (v) => ($var.$set($var.$get() - v), $var.$get()),
+          "*=": (v) => ($var.$set($var.$get() * v), $var.$get()),
+          "/=": (v) => ($var.$set($var.$get() / v), $var.$get()),
+          "%=": (v) => ($var.$set($var.$get() % v), $var.$get()),
+          "<<=": (v) => ($var.$set($var.$get() << v), $var.$get()),
+          ">>=": (v) => ($var.$set($var.$get() >> v), $var.$get()),
+          ">>>=": (v) => ($var.$set($var.$get() >>> v), $var.$get()),
+          "|=": (v) => ($var.$set($var.$get() | v), $var.$get()),
+          "^=": (v) => ($var.$set($var.$get() ^ v), $var.$get()),
+          "&=": (v) => ($var.$set($var.$get() & v), $var.$get())
+      })[expr.operator](evaluate(expr.right, localEnv))
+
     case 'ExpressionStatement':
       evaluate(expr.expression, localEnv);
       break;

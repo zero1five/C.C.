@@ -50,6 +50,16 @@ const parseBlockAst = (ast) => {
   }
 };
 
+const parseAssignAst = (ast) => {
+  const [[target, operator, source]] = ast;
+  return {
+    type: 'AssignmentExpression',
+    operator: operator.value,
+    left: target,
+    right: source
+  }
+};
+
 const parseArrowFunctionAst = (ast) => {
   let [[left, right, arrow, body]] = ast,
       params = [];
@@ -83,7 +93,7 @@ const rootProgram = () => chain(plus([expression, variable, BlockStatement]))(as
   body: ast[0]
 }));
 
-const expression = () => chain([callExpression, arrowFunctionExpression, binary])(ast => ({
+const expression = () => chain([AssignmentExpression, callExpression, arrowFunctionExpression, binary])(ast => ({
   type: 'ExpressionStatement',
   expression: ast[0]
 }));
@@ -91,6 +101,10 @@ const expression = () => chain([callExpression, arrowFunctionExpression, binary]
 const BlockStatement = () => chain(
   matchTokenType('blockStart'), optional(rootProgram), matchTokenType('blockEnd')
 )(parseBlockAst);
+
+const AssignmentExpression = () => chain([
+  chain(Identifier, matchTokenType('operator'), [Literal, Identifier, expression])
+])(parseAssignAst);
 
 const arrowFunctionExpression = () => chain([
   chain(Identifier, matchTokenType('arrowFunction'), BlockStatement),
