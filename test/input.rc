@@ -25,10 +25,10 @@ printStr("one params is %s, two params is %s", 1 + 3, 2);
 
 print(1, (9 + 3) / 6 , 3 + 3);
 
-print(a);
+print(2);
 
-// const fn = (a) => { 
-//   print(a + 5) 
-// };
+const fn = (a) => { 
+  print(a + 5) 
+};
 
-// fn(10)
+fn(10)

@@ -72,7 +72,7 @@ const rootProgram = () => chain(plus([expression, variable, BlockStatement]))(as
   body: ast[0]
 }));
 
-const expression = () => chain([binary, callExpression, arrowFunctionExpression])(ast => ({
+const expression = () => chain([callExpression, arrowFunctionExpression, binary])(ast => ({
   type: 'ExpressionStatement',
   expression: ast[0]
 }));
@@ -88,6 +88,7 @@ const arrowFunctionExpression = () => chain([
 
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
+  chain(Identifier, "(", plus([Literal, Identifier, binary]), ")", optional(";")),
   chain(Identifier, "(", many([Literal, Identifier, binary, matchTokenType('separator')]), ")", optional(";"))
 ])(parseCallAst);
 
