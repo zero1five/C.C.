@@ -43,7 +43,7 @@ const lexerRules = [
     /* 标识符 */
     type: 'Identifier',
     regexes: [
-      /^((?!(let|const))[a-zA-Z]+(?!(let|const)))/,
+      /^((?!(let|const))[a-zA-Z0-9]+(?!(let|const)))/,
     ]
   },
   {

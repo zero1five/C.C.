@@ -33,6 +33,7 @@
 
 // fn(10)
 
-const fn = a => print(a)
+const fn = a => fn2(10 + a);
+const fn2 = b => print(b);
 
 fn(10)
