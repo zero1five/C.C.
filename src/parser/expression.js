@@ -37,7 +37,7 @@ const parseCallAst = (ast) => {
   }
   return {
     type: 'CallExpression',
-    call: callee,
+    callee,
     arguments: args
   }
 };
