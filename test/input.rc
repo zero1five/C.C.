@@ -2,17 +2,21 @@
 /* 我也可以注释 */
 /** 我们都可以注释 */
 
-let a = () => {}
+// let a = () => {}
 
-let a
+// let a
 
-1 + 3 / 4
+// 1 + 3 / 4
 
-(1 + 3) / 4
+// (1 + 3) / 4
 
-(a, b, c) => {}
+// (a, b, c) => {}
 
+/*
 () => {
   let a;
   const b;
 }
+*/
+
+print("one params is %s, two params is %s", 1, 2)

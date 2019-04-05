@@ -26,7 +26,10 @@ const lexerRules = [
   {
     /* 文字 */
     type: 'Literal',
-    regexes: [/^([0-9]+)/]
+    regexes: [
+      /^([0-9]+)/,
+      /^"[^]+"/
+    ]
   },
   {
     /* 操作符 */
