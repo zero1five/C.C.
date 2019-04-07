@@ -58,8 +58,7 @@ const eval_expression = (expr, localEnv) => {
       })[expr.operator](evaluate(expr.right, localEnv))
 
     case 'ExpressionStatement':
-      evaluate(expr.expression, localEnv);
-      break;
+      return evaluate(expr.expression, localEnv);
     case 'ArrowFunctionExpression':
       return function(...args) {
         const new_Scope = new Scope('arrowFunction', localEnv);

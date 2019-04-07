@@ -50,9 +50,9 @@ const fn = () => {
 
   print(b);
 
-  return b
+  return 1000
 }
 
-fn();
+// fn();
 
-// print(b);
+print(fn());

@@ -109,7 +109,7 @@ const expression = () => chain([AssignmentExpression, callExpression, arrowFunct
 const statement = () => chain([
   chain(BlockStatement),
   chain(returnStatement)
-])(ast => ast[0])
+])(ast => ast[0][0])
 
 const BlockStatement = () => chain([
   chain(matchTokenType('blockStart'), optional(rootProgram), matchTokenType('blockEnd'))
@@ -132,7 +132,7 @@ const arrowFunctionExpression = () => chain([
 
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
-  chain(Identifier, "(", plus([Literal, Identifier, binary]), ")", optional(";")),
+  chain(Identifier, "(", plus([Literal, Identifier, binary, callExpression]), ")", optional(";")),
   chain(Identifier, "(", many([Literal, Identifier, binary, matchTokenType('separator')]), ")", optional(";"))
 ])(parseCallAst);
 
