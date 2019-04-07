@@ -34,6 +34,9 @@ const eval_expression = (expr, localEnv) => {
           }
       }
       break;
+    case 'ReturnStatement': 
+      RETURN_SINGAL.result = expr.argument ? evaluate(expr.argument, localEnv) : undefined
+      return RETURN_SINGAL
     case 'AssignmentExpression':
       const { left, right } = expr;
       let $var = localEnv.$find(left.name);
