@@ -49,6 +49,8 @@ const fn = () => {
   b = 10;
 
   print(b);
+
+  return b
 }
 
 fn();

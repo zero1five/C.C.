@@ -43,7 +43,7 @@ const lexerRules = [
     /* 标识符 */
     type: 'Identifier',
     regexes: [
-      /^((?!(let|const))[a-zA-Z0-9]+(?!(let|const)))/,
+      /^((?!(let|const|return))[a-zA-Z0-9]+(?!(let|const|return)))/,
     ]
   },
   {
@@ -65,6 +65,11 @@ const lexerRules = [
     regexes: [
       /^=>/
     ]
+  },
+  {
+    /* return */
+    type: 'return',
+    regexes: [/^return/]
   }
 ];
 

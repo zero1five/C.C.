@@ -31,7 +31,7 @@ const parseVariableAst = (ast) =>
 const parseCallAst = (ast) => {
   const [callBody] = ast;
   let [callee, left, args, right] = callBody;
-  if (args.value === ')') {
+  if (args && args.value === ')') {
     args = []
   }
   return {
@@ -42,13 +42,21 @@ const parseCallAst = (ast) => {
 };
 
 const parseBlockAst = (ast) => {
-  const [start, body, end] = ast;
+  const [[start, body, end]] = ast;
 
   return {
     type: 'BlockStatement',
     body: body ? body.body : []
   }
 };
+
+const parseReturnAst = ast => {
+  const [[returnTag, expr]] = ast;
+  return {
+    type: 'ReturnStatement',
+    argument: expr
+  }
+}
 
 const parseAssignAst = (ast) => {
   const [[target, operator, source]] = ast;
@@ -88,7 +96,7 @@ const parseArrowFunctionAst = (ast) => {
  * 
  */
 
-const rootProgram = () => chain(plus([expression, variable, BlockStatement]))(ast => ({
+const rootProgram = () => chain(plus([expression, variable, statement]))(ast => ({
   type: 'Program',
   body: ast[0]
 }));
@@ -98,9 +106,18 @@ const expression = () => chain([AssignmentExpression, callExpression, arrowFunct
   expression: ast[0]
 }));
 
-const BlockStatement = () => chain(
-  matchTokenType('blockStart'), optional(rootProgram), matchTokenType('blockEnd')
-)(parseBlockAst);
+const statement = () => chain([
+  chain(BlockStatement),
+  chain(returnStatement)
+])(ast => ast[0])
+
+const BlockStatement = () => chain([
+  chain(matchTokenType('blockStart'), optional(rootProgram), matchTokenType('blockEnd'))
+])(parseBlockAst);
+
+const returnStatement = () => chain([
+  chain(matchTokenType('return'), optional([Identifier, expression]))
+])(parseReturnAst);
 
 const AssignmentExpression = () => chain([
   chain(Identifier, matchTokenType('operator'), [Literal, Identifier, expression])
