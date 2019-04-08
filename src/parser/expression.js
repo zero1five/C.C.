@@ -165,7 +165,7 @@ const factor = () => chain([
 const Literal = () => chain(matchTokenType('Literal'))(ast => ({
   ...ast[0],
   type: 'Literal',
-  value: /^([0-9]+)$/.test(ast[0].value) 
+  value: /^([0-9]+)(\.[0-9]+)?$/.test(ast[0].value) 
     ? Number(ast[0].value) 
     : ast[0].value
 }));
