@@ -16,8 +16,9 @@ $ npm install flcc -g
 
 let displayText = "I'm C.C."
 
-print(displayText);
+print(displayText); // I'm C.C.
 
-printStr("I'm C.C. %s", "a little lang")
+/* I'm C.C. a little lang */
+printStr("I'm C.C. %s", "a little lang") 
 
 ```
