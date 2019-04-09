@@ -68,6 +68,14 @@ const parseAssignAst = (ast) => {
   }
 };
 
+const parseArrayAst = (ast) => {
+  const [[start, elements, end]] = ast;
+  return {
+    type: 'ArrayExpression',
+    elements
+  }
+};
+
 const parseArrowFunctionAst = (ast) => {
   let [[left, right, arrow, body]] = ast,
       params = [];
@@ -92,16 +100,18 @@ const parseArrowFunctionAst = (ast) => {
   }
 };
 
-/** 
- * 
- */
-
 const rootProgram = () => chain(plus([expression, variable, statement]))(ast => ({
   type: 'Program',
   body: ast[0]
 }));
 
-const expression = () => chain([AssignmentExpression, callExpression, arrowFunctionExpression, binary])(ast => ({
+const expression = () => chain([
+    AssignmentExpression, 
+    callExpression, 
+    arrowFunctionExpression,
+    arrayExpression,
+    binary
+])(ast => ({
   type: 'ExpressionStatement',
   expression: ast[0]
 }));
@@ -130,10 +140,14 @@ const arrowFunctionExpression = () => chain([
   chain("(", plus([Identifier]), ")", matchTokenType('arrowFunction'), optional([expression, BlockStatement])),
 ])(parseArrowFunctionAst);
 
+const arrayExpression = () => chain([
+    chain(matchTokenType('arrayStart'), optional(many([Identifier, Literal, expression])), matchTokenType('arrayEnd'), optional(';'))
+])(parseArrayAst);
+
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
   chain(Identifier, "(", plus([Literal, Identifier, binary, callExpression]), ")", optional(";")),
-  chain(Identifier, "(", many([Literal, Identifier, binary, matchTokenType('separator')]), ")", optional(";"))
+  chain(Identifier, "(", many([Literal, Identifier, binary, /* matchTokenType('separator') */]), ")", optional(";"))
 ])(parseCallAst);
 
 const variable = () => chain([

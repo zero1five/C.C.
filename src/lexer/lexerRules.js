@@ -70,6 +70,14 @@ const lexerRules = [
     /* return */
     type: 'return',
     regexes: [/^return/]
+  },
+  {
+    type: 'arrayStart',
+    regexes: [/^\[/]
+  },
+  {
+    type: 'arrayEnd',
+    regexes: [/^\]/]
   }
 ];
 
