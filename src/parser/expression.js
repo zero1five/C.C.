@@ -146,8 +146,8 @@ const arrayExpression = () => chain([
 
 const callExpression = () => chain([
   chain(Identifier, "(", ")", optional(";")),
-  chain(Identifier, "(", plus([Literal, Identifier, binary, callExpression]), ")", optional(";")),
-  chain(Identifier, "(", many([Literal, Identifier, binary, /* matchTokenType('separator') */]), ")", optional(";"))
+  chain(Identifier, "(", plus([Literal, Identifier, binary, callExpression, expression]), ")", optional(";")),
+  chain(Identifier, "(", many([Literal, Identifier, binary, matchTokenType('separator')]), ")", optional(";")),
 ])(parseCallAst);
 
 const variable = () => chain([

@@ -23,6 +23,13 @@ const eval_expression = (expr, localEnv) => {
       } else {
         return evaluate(object, localEnv)[property.name];
       }
+    case 'ArrayExpression': 
+      const { elements } = expr;
+      const arr = new Array();
+      for (let i = 0, l = elements.length; i < l; i++) {
+        arr.push(evaluate(elements[i]))
+      }
+      return arr
     case 'BlockStatement':
       let new_scope = localEnv.invasived ? localEnv : new Scope('block', localEnv)
       for (const node of expr.body) {
