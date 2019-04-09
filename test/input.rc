@@ -2,4 +2,8 @@
 /* 我也可以注释 */
 /** 我们都可以注释 */
 
-print([1,2]);
+let displayText = "I'm C.C."
+
+print(displayText); // I'm C.C.
+
+print("")

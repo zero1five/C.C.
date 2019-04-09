@@ -10,3 +10,12 @@
 ```bash
 $ npm install flcc -g
 ```
+
+## Uasge
+```javascript
+
+let displayText = "I'm C.C."
+
+printStr("I'm C.C. %s", "a little lang")
+
+```

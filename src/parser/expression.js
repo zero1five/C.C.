@@ -106,8 +106,8 @@ const rootProgram = () => chain(plus([expression, variable, statement]))(ast => 
 }));
 
 const expression = () => chain([
-    AssignmentExpression, 
     callExpression, 
+    AssignmentExpression, 
     arrowFunctionExpression,
     arrayExpression,
     binary
@@ -145,9 +145,7 @@ const arrayExpression = () => chain([
 ])(parseArrayAst);
 
 const callExpression = () => chain([
-  chain(Identifier, "(", ")", optional(";")),
-  chain(Identifier, "(", plus([Literal, Identifier, binary, callExpression, expression]), ")", optional(";")),
-  chain(Identifier, "(", many([Literal, Identifier, binary, matchTokenType('separator')]), ")", optional(";")),
+  chain(Identifier, "(", optional(plus([Literal, Identifier, binary, callExpression, expression])), ")", optional(";")),
 ])(parseCallAst);
 
 const variable = () => chain([
@@ -181,7 +179,7 @@ const Literal = () => chain(matchTokenType('Literal'))(ast => ({
   type: 'Literal',
   value: /^([0-9]+)(\.[0-9]+)?$/.test(ast[0].value) 
     ? Number(ast[0].value) 
-    : ast[0].value
+    : ast[0].value.slice(1, -1)
 }));
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
