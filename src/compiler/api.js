@@ -4,7 +4,7 @@ const api = {
     if (!templete) {
       throw `[Error]print: need template are you sure one params exits`
     }
-    if (templete.match(regex)[0].length !== params.length) {
+    if (templete.match(regex).length !== params.length) {
       throw `[Error]print: template and params length not match`
     }
     while(params.length) {

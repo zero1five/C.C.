@@ -4,6 +4,6 @@
 
 let displayText = "I'm C.C."
 
-print(displayText); // I'm C.C.
+print(displayText);
 
-print("")
+printStr("I'm C.C. %s", "a little lang")
