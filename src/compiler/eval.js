@@ -1,3 +1,4 @@
+const { isEqual } = require('lodash');
 const { Scope } = require('./scope');
 
 const BREAK_SINGAL = {};
@@ -55,6 +56,18 @@ const eval_expression = (expr, localEnv) => {
           }
       }
       break;
+    case 'CaseStatement':
+      let newScope = localEnv.invasived ? localEnv : new Scope('block', localEnv);
+      const { cases, discriminant } = expr;
+      const target = evaluate(discriminant, newScope);
+
+      for (const when of cases) {
+        const { test, consequent } = when;
+        const left = evaluate(test, newScope);
+        if (isEqual(left, target)) {
+          return evaluate(consequent, newScope);
+        }
+      }
     case 'ReturnStatement': 
       RETURN_SINGAL.result = expr.argument ? evaluate(expr.argument, localEnv) : undefined
       return RETURN_SINGAL
