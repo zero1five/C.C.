@@ -23,6 +23,20 @@ const eval_expression = (expr, localEnv) => {
       } else {
         return evaluate(object, localEnv)[property.name];
       }
+    case 'ObjectExpression':
+      const { properties } = expr,
+            objectContainer = {};
+      for (const property of properties) {
+        let key;
+        if (property.key.type === 'Literal') {
+          key = evaluate(property.key, scope)
+        } else if (property.key.type === 'Identifier') {
+          key = property.key.name
+        }
+        const value = evaluate(property.value, localEnv)
+        objectContainer[key] = value
+      }
+      return objectContainer;
     case 'ArrayExpression': 
       const { elements } = expr;
       const arr = new Array();

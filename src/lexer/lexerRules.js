@@ -24,6 +24,10 @@ const lexerRules = [
     ignore: true
   },
   {
+    type: 'infix',
+    regexes: [/^:/],
+  },
+  {
     /* 文字 */
     type: 'Literal',
     regexes: [
@@ -63,9 +67,7 @@ const lexerRules = [
   {
     /* 声明函数 */
     type: 'arrowFunction',
-    regexes: [
-      /^=>/
-    ]
+    regexes: [/^=>/]
   },
   {
     /* return */

@@ -76,6 +76,23 @@ const parseArrayAst = (ast) => {
   }
 };
 
+const parseObjectAst = (ast) => {
+  const [[ start, propertiesAST, end ]] = ast;
+  const properties = propertiesAST.map(property => {
+    const [key, infix, value] = property;
+    return {
+      type: 'Property',
+      key, 
+      value
+    }
+  });
+
+  return { 
+    type: 'ObjectExpression',
+    properties
+  }
+};
+
 const parseArrowFunctionAst = (ast) => {
   let [[left, right, arrow, body]] = ast,
       params = [];
@@ -133,6 +150,14 @@ const AssignmentExpression = () => chain([
   chain(Identifier, matchTokenType('operator'), [Literal, Identifier, expression])
 ])(parseAssignAst);
 
+const ObjectExpression = () => chain([
+  chain(
+    matchTokenType('blockStart'), 
+    optional(plus(chain(atom, matchTokenType('infix'), atom))) , 
+    matchTokenType('blockEnd')
+  ),
+])(parseObjectAst);
+
 const arrowFunctionExpression = () => chain([
   chain(Identifier, matchTokenType('arrowFunction'), BlockStatement),
   chain(Identifier, matchTokenType('arrowFunction'), expression),
@@ -150,7 +175,7 @@ const callExpression = () => chain([
 
 const variable = () => chain([
   chain(matchTokenType('Declarator'), Identifier),
-  chain(matchTokenType('Declarator'), Identifier, '=', optional([Literal, arrowFunctionExpression])),
+  chain(matchTokenType('Declarator'), Identifier, '=', optional([Literal, arrowFunctionExpression, ObjectExpression])),
 ])(ast => ({
   type: 'VariableDeclaration',
   kind: ast[0][0].value,
@@ -173,6 +198,8 @@ const factor = () => chain([
 ])(ast => ast[0]);
 
 /** atomic  */
+
+const atom = () => chain([Literal, Identifier])(ast => ast[0]);
 
 const Literal = () => chain(matchTokenType('Literal'))(ast => ({
   ...ast[0],
