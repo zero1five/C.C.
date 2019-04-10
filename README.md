@@ -24,15 +24,15 @@ printStr("I'm C.C. %s", "a little lang")
 const getLength = vector => {
   case (vector) {
     when { x: 1, y: 2, z: 3 } -> {
-      print('first case passed!');
+      print('first case passed.');
     }
     when { x: 1, y: 2 } -> {
-      print('second case passed!!');
+      print('second case passed.');
     }
   }
 }
 
-getLength({x: 1, y: 2, z: 3}); // first case passed!
-getLength({x: 1, y: 2}); // second case passed!!
+getLength({x: 1, y: 2, z: 3}); // first case passed.
+getLength({x: 1, y: 2}); // second case passed.
 
 ```
