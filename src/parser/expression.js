@@ -69,14 +69,22 @@ const parseAssignAst = (ast) => {
 };
 
 const parseCaseAst = (ast) => {
-  const [[]] = ast;
+  const [[caseToken, left, discriminant, right, { body }]] = ast;
+
   return {
-    type: 'caseStatement'
+    type: 'CaseStatement',
+    cases: body,
+    discriminant
   }
 }
 
 const parseWhenAst = (ast) => {
-
+  const [[when, test, arrow, consequent]] = ast;
+  return {
+    type: 'CaseWhen',
+    test,
+    consequent
+  }
 };
 
 const parseArrayAst = (ast) => {
@@ -145,10 +153,10 @@ const expression = () => chain([
 }));
 
 const statement = () => chain([
-  chain(BlockStatement),
   chain(returnStatement),
   chain(caseStatement),
-  chain(whenStatement)
+  chain(whenStatement),
+  chain(BlockStatement),
 ])(ast => ast[0][0]);
 
 const BlockStatement = () => chain([
@@ -160,11 +168,11 @@ const returnStatement = () => chain([
 ])(parseReturnAst);
 
 const caseStatement = () => chain([
-  chain(matchTokenType('case'), '(', [atom, expression], ')', statement)
+  chain(matchTokenType('case'), '(', [atom, expression], ')', BlockStatement)
 ])(parseCaseAst);
 
 const whenStatement = () => chain([
-  
+  chain(matchTokenType('when'), ObjectExpression, matchTokenType('whenArrow'), BlockStatement)
 ])(parseWhenAst);
 
 const AssignmentExpression = () => chain([
@@ -174,7 +182,10 @@ const AssignmentExpression = () => chain([
 const ObjectExpression = () => chain([
   chain(
     matchTokenType('blockStart'), 
-    optional(plus(chain(atom, matchTokenType('infix'), atom))) , 
+    optional(plus([
+      chain(atom, matchTokenType('infix'), atom),
+      chain(atom),
+    ])), 
     matchTokenType('blockEnd')
   ),
 ])(parseObjectAst);

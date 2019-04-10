@@ -10,8 +10,9 @@ printStr("I'm C.C. %s", "a little lang") /* I'm C.C. a little lang */
 
 const getLength = vector => {
   case (vector) {
-    when { x, y, z } ->
-      return Math.sqrt(x ** 2 + y ** 2 + z ** 2)
+    when { x, y, z } -> {
+      return x
+    }
   }
 }
 

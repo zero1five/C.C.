@@ -32,6 +32,14 @@ const lexerRules = [
     regexes: [/^case/],
   },
   {
+    type: 'when',
+    regexes: [/^when/]
+  },
+  {
+    type: 'whenArrow',
+    regexes: [/^->/]
+  },
+  {
     /* 文字 */
     type: 'Literal',
     regexes: [
