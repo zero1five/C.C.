@@ -28,6 +28,10 @@ const lexerRules = [
     regexes: [/^:/],
   },
   {
+    type: 'case',
+    regexes: [/^case/],
+  },
+  {
     /* 文字 */
     type: 'Literal',
     regexes: [

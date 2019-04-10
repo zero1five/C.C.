@@ -68,6 +68,17 @@ const parseAssignAst = (ast) => {
   }
 };
 
+const parseCaseAst = (ast) => {
+  const [[]] = ast;
+  return {
+    type: 'caseStatement'
+  }
+}
+
+const parseWhenAst = (ast) => {
+
+};
+
 const parseArrayAst = (ast) => {
   const [[start, elements, end]] = ast;
   return {
@@ -86,7 +97,6 @@ const parseObjectAst = (ast) => {
       value
     }
   });
-
   return { 
     type: 'ObjectExpression',
     properties
@@ -124,6 +134,7 @@ const rootProgram = () => chain(plus([expression, variable, statement]))(ast => 
 
 const expression = () => chain([
     callExpression, 
+    ObjectExpression,
     AssignmentExpression, 
     arrowFunctionExpression,
     arrayExpression,
@@ -135,7 +146,9 @@ const expression = () => chain([
 
 const statement = () => chain([
   chain(BlockStatement),
-  chain(returnStatement)
+  chain(returnStatement),
+  chain(caseStatement),
+  chain(whenStatement)
 ])(ast => ast[0][0]);
 
 const BlockStatement = () => chain([
@@ -145,6 +158,14 @@ const BlockStatement = () => chain([
 const returnStatement = () => chain([
   chain(matchTokenType('return'), optional([Identifier, expression]))
 ])(parseReturnAst);
+
+const caseStatement = () => chain([
+  chain(matchTokenType('case'), '(', [atom, expression], ')', statement)
+])(parseCaseAst);
+
+const whenStatement = () => chain([
+  
+])(parseWhenAst);
 
 const AssignmentExpression = () => chain([
   chain(Identifier, matchTokenType('operator'), [Literal, Identifier, expression])
