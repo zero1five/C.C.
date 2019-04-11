@@ -21,3 +21,7 @@ const getLength = vector => {
 
 getLength({x: 1, y: 2, z: 3}); // first case passed.
 getLength({x: 1, y: 2}); // second case passed.
+
+const a = { displayText }
+
+print(a)

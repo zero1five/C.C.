@@ -18,8 +18,7 @@ let displayText = "I'm C.C."
 
 print(displayText); // I'm C.C.
 
-/* I'm C.C. a little lang */
-printStr("I'm C.C. %s", "a little lang") 
+printStr("I'm C.C. %s", "a little lang") /* I'm C.C. a little lang */
 
 const getLength = vector => {
   case (vector) {
@@ -34,5 +33,11 @@ const getLength = vector => {
 
 getLength({x: 1, y: 2, z: 3}); // first case passed.
 getLength({x: 1, y: 2}); // second case passed.
+
+const invariant = "will not be changed."
+
+// invariant = "try change variable"
+
+// print(invariant) Uncaught TypeError: Assignment to constant variable.
 
 ```

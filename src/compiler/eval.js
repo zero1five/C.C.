@@ -34,7 +34,7 @@ const eval_expression = (expr, localEnv) => {
         } else if (property.key.type === 'Identifier') {
           key = property.key.name
         }
-        const value = evaluate(property.value, localEnv)
+        const value = evaluate(property.value ? property.value : property.key, localEnv)
         objectContainer[key] = value
       }
       return objectContainer;

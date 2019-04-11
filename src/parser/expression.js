@@ -182,10 +182,10 @@ const AssignmentExpression = () => chain([
 const ObjectExpression = () => chain([
   chain(
     matchTokenType('blockStart'), 
-    optional(plus([
-      chain(atom, matchTokenType('infix'), atom),
+    many([
       chain(atom),
-    ])), 
+      chain(atom, matchTokenType('infix'), atom),
+    ]),
     matchTokenType('blockEnd')
   ),
 ])(parseObjectAst);
@@ -206,8 +206,7 @@ const callExpression = () => chain([
 ])(parseCallAst);
 
 const variable = () => chain([
-  chain(matchTokenType('Declarator'), Identifier),
-  chain(matchTokenType('Declarator'), Identifier, '=', optional([Literal, arrowFunctionExpression, ObjectExpression])),
+  chain(matchTokenType('Declarator'), Identifier, optional('='), optional([Literal, arrowFunctionExpression, ObjectExpression])),
 ])(ast => ({
   type: 'VariableDeclaration',
   kind: ast[0][0].value,
