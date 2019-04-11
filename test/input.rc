@@ -1,37 +1,3 @@
-// 我可以注释
-/* 我也可以注释 */
-/** 我们都可以注释 */
-
-let displayText = "I'm C.C."
-
-print(displayText); // I'm C.C.
-
-printStr("I'm C.C. %s", "a little lang") /* I'm C.C. a little lang */
-
-const getLength = vector => {
-  case (vector) {
-    when { x: 1, y: 2, z: 3 } -> {
-      print('first case passed.');
-    }
-    when { x: 1, y: 2 } -> {
-      print('second case passed.');
-    }
-  }
-}
-
-getLength({x: 1, y: 2, z: 3}); // first case passed.
-getLength({x: 1, y: 2}); // second case passed.
-
-const a = { displayText }
-
-print(a) // { displayText: 'I\'m C.C.' }
-
-const fn = () => print('1234')
-
-fn()
-
 const arr = [1,2,3]
 
 print(arr) // [1, 2, 3]
-
-1 + 3

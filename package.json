@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node ./src/main ./test/input.rc"
+    "dev:npm": "npm run test-case1 && npm run test-case2",
+    "dev": "concurrently --kill-others \"npm run test-case1\" \"npm run test-case2\"",
+    "test-case1": "node ./src/main ./test/input.rc",
+    "test-case2": "node ./src/main ./test/function.rc"
   },
   "repository": {
     "type": "git",
@@ -19,9 +22,10 @@
   },
   "homepage": "https://github.com/zero1five/C.C.#readme",
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "syntax-parser": "^1.0.14"
   },
   "devDependencies": {
-    "syntax-parser": "^1.0.14"
+    "concurrently": "^4.1.0"
   }
 }
