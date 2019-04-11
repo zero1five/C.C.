@@ -24,4 +24,8 @@ getLength({x: 1, y: 2}); // second case passed.
 
 const a = { displayText }
 
-print(a)
+print(a) // { displayText: 'I\'m C.C.' }
+
+const fn = () => print('1234')
+
+fn()

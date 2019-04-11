@@ -31,13 +31,11 @@ const parseVariableAst = (ast) =>
 const parseCallAst = (ast) => {
   const [callBody] = ast;
   let [callee, left, args, right] = callBody;
-  if (args && args.value === ')') {
-    args = []
-  }
+
   return {
     type: 'CallExpression',
     callee,
-    arguments: args
+    arguments: args ? args : []
   }
 };
 
@@ -114,7 +112,6 @@ const parseObjectAst = (ast) => {
 const parseArrowFunctionAst = (ast) => {
   let [[left, right, arrow, body]] = ast,
       params = [];
-
   // a => {}
   if (left.value !== '(') {
     [[params, arrow, body]] = ast;
@@ -130,7 +127,7 @@ const parseArrowFunctionAst = (ast) => {
     return {
       type: 'ArrowFunctionExpression',
       body,
-      params: params.length ? params : []
+      params
     }
   }
 };
@@ -191,10 +188,9 @@ const ObjectExpression = () => chain([
 ])(parseObjectAst);
 
 const arrowFunctionExpression = () => chain([
-  chain(Identifier, matchTokenType('arrowFunction'), BlockStatement),
-  chain(Identifier, matchTokenType('arrowFunction'), expression),
-  chain("(", ")", matchTokenType('arrowFunction'), BlockStatement),
-  chain("(", plus([Identifier]), ")", matchTokenType('arrowFunction'), optional([expression, BlockStatement])),
+  chain(Identifier, matchTokenType('arrowFunction'), [BlockStatement, expression]),
+  chain("(", ")", matchTokenType('arrowFunction'), [BlockStatement, expression]),
+  chain("(", many([Identifier]), ")", matchTokenType('arrowFunction'), [expression, BlockStatement]),
 ])(parseArrowFunctionAst);
 
 const arrayExpression = () => chain([
@@ -202,7 +198,7 @@ const arrayExpression = () => chain([
 ])(parseArrayAst);
 
 const callExpression = () => chain([
-  chain(Identifier, "(", optional(plus([Literal, Identifier, binary, callExpression, expression])), ")", optional(";")),
+  chain(Identifier, "(", many([Literal, Identifier, binary, callExpression, expression]), ")"),
 ])(parseCallAst);
 
 const variable = () => chain([
