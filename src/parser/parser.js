@@ -11,7 +11,6 @@ const rootProgram = require('./expression');
 const parser = (code) => {
   const Lexer = createLexer(lexerRules, { /* options */ });
   const Parser = createParser(rootProgram, Lexer);
-  // console.log(Parser(code).ast.body);
   return Parser(code);
 };
 

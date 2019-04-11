@@ -153,11 +153,11 @@ const expression = () => chain([
 }));
 
 const statement = () => chain([
-  chain(returnStatement),
-  chain(caseStatement),
-  chain(whenStatement),
-  chain(BlockStatement),
-])(ast => ast[0][0]);
+  returnStatement,
+  caseStatement,
+  whenStatement,
+  BlockStatement,
+])(ast => ast[0]);
 
 const BlockStatement = () => chain([
   chain(matchTokenType('blockStart'), optional(rootProgram), matchTokenType('blockEnd'))

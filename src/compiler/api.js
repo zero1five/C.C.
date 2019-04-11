@@ -10,11 +10,19 @@ const api = {
     while(params.length) {
       templete = templete.replace(/%s/, params.shift());
     }
-    console.log.call(null, templete);
+    printWithNative(templete);
   },
-  print: (...params) => {
-    console.log.apply(null, params)
+  print: function() {
+    return printWithNative(...arguments);
   }
 }
+
+const printWithNative = (...args) => {
+  if (args.length === 1) {
+    console.log.call(null, args[0]);
+  } else {
+    console.log.apply(null, ...args)
+  }
+};
 
 module.exports = api
