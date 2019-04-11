@@ -202,7 +202,7 @@ const callExpression = () => chain([
 ])(parseCallAst);
 
 const variable = () => chain([
-  chain(matchTokenType('Declarator'), Identifier, optional('='), optional([Literal, arrowFunctionExpression, ObjectExpression])),
+  chain(matchTokenType('Declarator'), Identifier, optional('='), optional([expression])),
 ])(ast => ({
   type: 'VariableDeclaration',
   kind: ast[0][0].value,
@@ -231,9 +231,10 @@ const atom = () => chain([Literal, Identifier])(ast => ast[0]);
 const Literal = () => chain(matchTokenType('Literal'))(ast => ({
   ...ast[0],
   type: 'Literal',
-  value: /^([0-9]+)(\.[0-9]+)?$/.test(ast[0].value) 
+  value: isNumber(ast[0].value) 
     ? Number(ast[0].value) 
-    : ast[0].value.slice(1, -1)
+    : ast[0].value.slice(1, -1),
+  metaType: isNumber(ast[0].value) ? 'Number' : 'null'
 }));
 
 const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
@@ -241,5 +242,7 @@ const Identifier = () => chain(matchTokenType('Identifier'))(ast => ({
   type: 'Identifier',
   name: ast[0].value
 }));
+
+const isNumber = (str) => /^([0-9]+)(\.[0-9]+)?$/.test(str);
 
 module.exports = rootProgram

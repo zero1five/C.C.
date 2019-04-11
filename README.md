@@ -40,4 +40,8 @@ const invariant = "will not be changed."
 
 // print(invariant) Uncaught TypeError: Assignment to constant variable.
 
+const arr = [1,2,3]
+
+print(arr) // [1, 2, 3]
+
 ```
