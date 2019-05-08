@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:npm": "npm run test-case1 && npm run test-case2",
-    "dev": "concurrently --kill-others \"npm run test-case1\" \"npm run test-case2\" \"npm run test-case3\" \"npm run test-case4\"",
+    "dev": "concurrently \"npm:test-*\"",
     "test-case1": "node ./src/main ./test/array.rc",
     "test-case2": "node ./src/main ./test/function.rc",
     "test-case3": "node ./src/main ./test/csp.rc",
