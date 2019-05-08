@@ -173,7 +173,7 @@ const whenStatement = () => chain([
 ])(parseWhenAst);
 
 const AssignmentExpression = () => chain([
-  chain(Identifier, matchTokenType('operator'), [Literal, Identifier, expression])
+  chain(Identifier, '=' , expression, matchTokenType('operator'), expression)
 ])(parseAssignAst);
 
 const ObjectExpression = () => chain([

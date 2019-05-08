@@ -1,3 +1,6 @@
 const arr = [1,2,3]
 
+const nums = [1,2 + 3, 5];
+
 print(arr) // [1, 2, 3]
+print(nums) // [1, 5, 5]

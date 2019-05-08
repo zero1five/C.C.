@@ -1,1 +1,7 @@
 // 惰性求值实现
+
+const lazyCall = x => x + 2;
+
+const a = lazyCall(5);
+
+print(a);
