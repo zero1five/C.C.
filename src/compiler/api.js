@@ -13,11 +13,11 @@ const api = {
     printWithNative(templete);
   },
   print: function() {
-    return printWithNative(...arguments);
+    return printWithNative([...arguments].map(arg => arg.flag === '$$lazyCall' ? arg.valueOf() : arg));
   }
 }
 
-const printWithNative = (...args) => {
+const printWithNative = args => {
   if (args.length === 1) {
     console.log.call(null, args[0]);
   } else {

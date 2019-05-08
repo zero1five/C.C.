@@ -1,5 +1,6 @@
 const { isEqual } = require('lodash');
 const { Scope } = require('./scope');
+const api = require('./api');
 
 const BREAK_SINGAL = {};
 const CONTINUE_SINGAL = {};
@@ -90,7 +91,6 @@ const eval_expression = (expr, localEnv) => {
           "^=": (v) => ($var.$set($var.$get() ^ v), $var.$get()),
           "&=": (v) => ($var.$set($var.$get() & v), $var.$get())
       })[expr.operator](evaluate(expr.right, localEnv))
-
     case 'ExpressionStatement':
       return evaluate(expr.expression, localEnv);
     case 'ArrowFunctionExpression':
@@ -107,15 +107,28 @@ const eval_expression = (expr, localEnv) => {
         }
       }
     case 'CallExpression':
+      const nativeFn = Object.keys(api);
       const func = evaluate(expr.callee, localEnv);
-      const args = expr.arguments.map(arg => evaluate(arg, localEnv));
-      if (expr.callee.type === 'MemberExpression') {
-       const object = evaluate(expr.callee.object, localEnv);
-       return func.apply(object, args);
-      } else {
-        const this_val = localEnv.$find('this')
-        return func.apply(this_val ? this_val.$get() : null, args)
+
+      const _call = () => {
+        const args = expr.arguments.map(arg => evaluate(arg, localEnv));
+        if (expr.callee.type === 'MemberExpression') {
+          const object = evaluate(expr.callee.object, localEnv);
+          return func.apply(object, args);
+        } else {
+          const this_val = localEnv.$find('this');
+          return func.apply(this_val ? this_val.$get() : null, args);
+        }
+      };
+      if (!nativeFn.includes(func.name)) {
+        // ordinary function
+        return {
+          flag: '$$lazyCall',
+          valueOf: () => _call()
+        }
       }
+      // native function call
+      return _call();
     case 'VariableDeclaration':
       const { kind } = expr;
       for (const declartor of expr.declarations) {
