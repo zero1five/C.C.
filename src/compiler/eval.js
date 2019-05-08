@@ -99,9 +99,9 @@ const eval_expression = (expr, localEnv) => {
         const { params, body } = expr;
         new_Scope.invasived = true;
         params.map((param, idx) => new_Scope.$const(param.name, args[idx]));
-        new_Scope.$const('this', this)
-        new_Scope.$const('arguments', arguments)
-        const result = evaluate(body, new_Scope)
+        new_Scope.$const('this', this);
+        new_Scope.$const('arguments', arguments);
+        const result = evaluate(body, new_Scope);
         if (result === RETURN_SINGAL) {
           return result.result
         }

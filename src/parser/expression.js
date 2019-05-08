@@ -50,9 +50,16 @@ const parseBlockAst = (ast) => {
 
 const parseReturnAst = ast => {
   const [[returnTag, expr]] = ast;
-  return {
-    type: 'ReturnStatement',
-    argument: expr
+  if (returnTag !== 'return') {
+    return {
+      type: 'ReturnStatement',
+      argument: returnTag
+    }
+  } else {
+    return {
+      type: 'ReturnStatement',
+      argument: expr
+    }
   }
 }
 
@@ -161,7 +168,8 @@ const BlockStatement = () => chain([
 ])(parseBlockAst);
 
 const returnStatement = () => chain([
-  chain(matchTokenType('return'), optional([Identifier, expression]))
+  chain(matchTokenType('return'), optional([Identifier, expression])),
+  chain(expression)
 ])(parseReturnAst);
 
 const caseStatement = () => chain([
@@ -188,9 +196,9 @@ const ObjectExpression = () => chain([
 ])(parseObjectAst);
 
 const arrowFunctionExpression = () => chain([
-  chain(Identifier, matchTokenType('arrowFunction'), [BlockStatement, expression]),
-  chain("(", ")", matchTokenType('arrowFunction'), [BlockStatement, expression]),
-  chain("(", many([Identifier]), ")", matchTokenType('arrowFunction'), [expression, BlockStatement]),
+  chain(Identifier, matchTokenType('arrowFunction'), [returnStatement, expression, BlockStatement]),
+  chain("(", ")", matchTokenType('arrowFunction'), [returnStatement, expression, BlockStatement]),
+  chain("(", many([Identifier]), ")", matchTokenType('arrowFunction'), [returnStatement, expression, BlockStatement]),
 ])(parseArrowFunctionAst);
 
 const arrayExpression = () => chain([
